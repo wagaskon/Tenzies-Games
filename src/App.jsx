@@ -64,8 +64,7 @@ const diceElements = dice.map(die => (
         holdDice={() => holdDice(die.id)}
     />
 ))
-//   const confetti = require('canvas-confetti');
-{/*  */}
+
   return (
     <main>
     {tenzies &&  <Confetti
