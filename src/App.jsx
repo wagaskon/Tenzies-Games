@@ -6,6 +6,7 @@ import Confetti from 'react-confetti'
 import Die from './Die'
 
 function App() {
+    const [num,setNum]= useState(10)
 
   function allNewDice() {
     const newDice = []
@@ -17,7 +18,7 @@ function App() {
 
   const [dice, setDice] = useState(allNewDice())
   const [tenzies, setTenzies] = useState(false)
-  
+// let num=10;
   useEffect(() => {
     // Holding Dices
       const allHeld = dice.every(die => die.isHeld)
@@ -26,6 +27,8 @@ function App() {
       if (allHeld && allSameValue) {
           setTenzies(true)
       }
+      
+
   }, [dice])
 // Random Number Generation 
   function generateNewDie() {
@@ -36,7 +39,8 @@ function App() {
     }
 }
 function rollDice() {
-    if(!tenzies) {
+    // num=num-1;
+    if(!tenzies && num>0) {
         setDice(oldDice => oldDice.map(die => {
             return die.isHeld ? 
                 die :
@@ -45,6 +49,12 @@ function rollDice() {
     } else {
         setTenzies(false)
         setDice(allNewDice())
+    }
+    if(num<=0 || tenzies){
+        setNum(10)
+    }
+    else{
+        setNum(old=>{return old-1})
     }
 }
 
@@ -67,7 +77,7 @@ const diceElements = dice.map(die => (
 
   return (
     <main>
-    {tenzies &&  <Confetti
+    {num>0 && tenzies &&  <Confetti
      
     />}
     <h1 className="title">Tenzies</h1>
@@ -76,11 +86,14 @@ const diceElements = dice.map(die => (
     <div className="dice-container">
         {diceElements}
     </div>
+    {num>0 && <h3>Number of Dices Remain: {num}</h3>}
+    {num<=0 && <h3>!You Lose The Game!</h3>}
+    
     <button 
         className="roll-dice" 
         onClick={rollDice}
     >
-    {tenzies ? "New Game" : "Roll"}
+    {tenzies || num<=0 ? "New Game" : "Roll"}
     </button>
   </main>
   )
